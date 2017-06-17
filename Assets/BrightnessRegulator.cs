@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BrightnessRegulator : MonoBehaviour {
 
+
 	// Materialを入れる
 	Material myMaterial;
 
