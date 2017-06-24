@@ -42,6 +42,21 @@ public class FripperController : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.RightArrow) && tag == "RightFripperTag") {
 			SetAngle (this.defaultAngle);
 		}
+
+		// タッチでフリッパーを動かす
+		// Input.touches ですべてのタッチ情報のオブジェクトリストを返すので、これを使う
+		if (Input.touches.Length != 0) { // タッチ情報がある時
+			switch (Input.touches[0].phase) {
+				case TouchPhase.Began: // タッチした時フリッパーを動かす
+					Debug.Log("Touch position:" + Input.touches[0].position);
+					// TODO: 画面の右半分をタップした時は右フリッパー、左半分をタップした時は左を動かす
+					SetAngle (this.flickAngle);
+					break;
+				case TouchPhase.Ended: // 画面から指が離れた時フリッパーを元に戻す
+					SetAngle (this.defaultAngle);
+					break;
+			}
+		}
 	}
 
 	// フリッパーの傾きを設定

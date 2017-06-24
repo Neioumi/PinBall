@@ -41,7 +41,7 @@ public class ScoreCounter : MonoBehaviour {
 			Debug.Log("Collied to Large Cloud(+50pt). Score:" + score);
 			break;
 		default:
-			Debug.Log("Collied to something.");
+			// Debug.Log("Collied to something.");
 			break;
 		}
 
