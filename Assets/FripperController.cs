@@ -46,24 +46,58 @@ public class FripperController : MonoBehaviour {
 		// タッチでフリッパーを動かす
 		// Input.touches ですべてのタッチ情報のオブジェクトリストを返すので、これを使う
 		if (Input.touches.Length != 0) { // タッチ情報がある時
-			if (Input.touches[0].phase == TouchPhase.Began) {
-				// タッチした時フリッパーを動かす
-				Debug.Log("Touch position:" + Input.touches[0].position);
-				// TODO: 画面の右半分をタップした時は右フリッパー、左半分をタップした時は左を動かす
-				var touchPositionX = Input.touches[0].position.x;
-				if (touchPositionX < Screen.width / 2 && tag == "LeftFripperTag") { // 画面の左半分をタップした時、かつ左フリッパー
-					Debug.Log("Touch Left side");
-					SetAngle (this.flickAngle);
-				} if (touchPositionX > Screen.width / 2 && tag == "RightFripperTag") { // 画面の右半分をタップした時、かつ右フリッパー
-					// var rightFripper = tag == "RightFripperTag";
-					Debug.Log("Touch Right side");
-					SetAngle (this.flickAngle);
+
+			foreach (Touch n in Input.touches) {
+				var id = n.fingerId; // タッチした指のID
+
+				switch(n.phase) {
+					case TouchPhase.Began: // タッチした時
+						var touchPositionX = Input.touches[id].position.x; // タッチのx座標
+
+						// 画面の左半分をタップした時、左フリッパーを動かす
+						if (touchPositionX < Screen.width / 2 && tag == "LeftFripperTag") {
+							Debug.LogFormat("{0}:左側をタッチ", id);
+							SetAngle (this.flickAngle);
+						}
+						// 画面の右半分をタップした時、右フリッパーを動かす
+						if (touchPositionX > Screen.width / 2 && tag == "RightFripperTag") {
+							// var rightFripper = tag == "RightFripperTag";
+							Debug.LogFormat("{0}:右側をタッチ", id);
+							SetAngle (this.flickAngle);
+						}
+						break;
+					case TouchPhase.Ended: // 画面から指が離れた時
+						Debug.LogFormat("{0}:離した", id);
+						// フリッパーを元に戻す
+						SetAngle (this.defaultAngle);
+						break;
 				}
 			}
-			if (Input.touches[0].phase == TouchPhase.Ended) {
-				// 画面から指が離れた時フリッパーを元に戻す
-				SetAngle (this.defaultAngle);
-			}
+
+
+
+
+
+
+			// if (Input.touches[0].phase == TouchPhase.Began) {
+			// 	// タッチした時フリッパーを動かす
+			// 	Debug.Log("Touch position:" + Input.touches[0].position);
+
+			// 	// TODO: 画面の右半分をタップした時は右フリッパー、左半分をタップした時は左を動かす
+			// 	var touchPositionX = Input.touches[0].position.x;
+			// 	if (touchPositionX < Screen.width / 2 && tag == "LeftFripperTag") { // 画面の左半分をタップした時、かつ左フリッパー
+			// 		Debug.Log("Touch Left side");
+			// 		SetAngle (this.flickAngle);
+			// 	} if (touchPositionX > Screen.width / 2 && tag == "RightFripperTag") { // 画面の右半分をタップした時、かつ右フリッパー
+			// 		// var rightFripper = tag == "RightFripperTag";
+			// 		Debug.Log("Touch Right side");
+			// 		SetAngle (this.flickAngle);
+			// 	}
+			// }
+			// if (Input.touches[0].phase == TouchPhase.Ended) {
+			// 	// 画面から指が離れた時フリッパーを元に戻す
+			// 	SetAngle (this.defaultAngle);
+			// }
 		}
 	}
 
