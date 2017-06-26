@@ -50,10 +50,12 @@ public class FripperController : MonoBehaviour {
 			foreach (Touch n in Input.touches) {
 				var id = n.fingerId; // タッチした指のID
 
+				// IndexOutOfRangeException array index is out of range エラーが出る
+				// var touchPositionX = Input.touches[id].position.x; // タッチのx座標
+				float touchPositionX = n.position.x; // タッチのx座標
+
 				switch(n.phase) {
 					case TouchPhase.Began: // タッチした時
-						var touchPositionX = Input.touches[id].position.x; // タッチのx座標
-
 						// 画面の左半分をタップした時、左フリッパーを動かす
 						if (touchPositionX < Screen.width / 2 && tag == "LeftFripperTag") {
 							Debug.LogFormat("{0}:左側をタッチ", id);
@@ -66,11 +68,19 @@ public class FripperController : MonoBehaviour {
 							SetAngle (this.flickAngle);
 						}
 						break;
-					
+
 					case TouchPhase.Ended: // 画面から指が離れた時
-						Debug.LogFormat("{0}:離した", id);
-						// フリッパーを元に戻す
-						SetAngle (this.defaultAngle);
+
+						// 画面の左半分をタップした指を離した時、左フリッパーを元に戻す
+						if (touchPositionX < Screen.width / 2 && tag == "LeftFripperTag") {
+							Debug.LogFormat("{0}:左側の指を離した", id);
+							SetAngle (this.defaultAngle);
+						}
+						// 画面の右半分をタップした指を離した時、右フリッパーを元に戻す
+						if (touchPositionX > Screen.width / 2 && tag == "RightFripperTag") {
+							Debug.LogFormat("{0}:右側の指を離した", id);
+							SetAngle (this.defaultAngle);
+						}
 						break;
 				}
 			}
